@@ -4,12 +4,13 @@ public class Cube extends Mesh {
     public Cube(double a) {
         super();
 
+        double b = a / 2;
         for(int i = 0; i < 2; i++) {
             for(int j = 0; j < 2; j++) {
-                this.addVertex(new Vertex(a * Math.pow(-1, i), a * Math.pow(-1, j), a));
+                this.addVertex(new Vertex(b * Math.pow(-1, i), b * Math.pow(-1, j), b));
             }
             for(int j = 0; j < 2; j++) {
-                this.addVertex(new Vertex(a * Math.pow(-1, i), a * Math.pow(-1, j), -a));
+                this.addVertex(new Vertex(b * Math.pow(-1, i), b * Math.pow(-1, j), -b));
             }
         }
 
