@@ -77,8 +77,9 @@ public final class Face implements ObjObject {
         }
         StringBuilder export = new StringBuilder("f");
         for (int vertex : this.vertices) {
-            export.append(String.format(" %d", vertex));
+            export.append(String.format(" %d", vertex + 1));
         }
+        export.append("\n");
         return export.toString();
     }
 }

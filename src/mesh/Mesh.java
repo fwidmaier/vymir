@@ -55,6 +55,14 @@ public class Mesh {
         this.faces.add(face);
     }
 
+    public ArrayList<Face> getFaces() {
+        return this.faces;
+    }
+
+    public ArrayList<Vertex> getVertices() {
+        return this.vertices;
+    }
+
     /*@
       @ requires faces.indexOf(face) != -1;
       @ ensures that the \result is the surface normal of the face

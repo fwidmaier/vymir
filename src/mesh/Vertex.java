@@ -8,7 +8,7 @@ import obj.ObjObject;
  * with the capability to be exported to wavefront obj format.
  */
 public class Vertex extends EuclideanVector implements ObjObject {
-    private static final int PRECISION = 5; // the number of decimal places
+    private static final int PRECISION = 5; // the number of decimal places when exported to .obj format
 
     public Vertex(double ... coordinates) {
         super(coordinates);
@@ -32,6 +32,7 @@ public class Vertex extends EuclideanVector implements ObjObject {
         for(int i = 0; i < this.getDimension(); i++) {
             export.append(String.format(pattern, this.getCoordinate(i)));
         }
+        export.append("\n");
         return export.toString();
     }
 }
