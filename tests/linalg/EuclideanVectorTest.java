@@ -73,4 +73,13 @@ public class EuclideanVectorTest {
         EuclideanVector w = new EuclideanVector(2, 3, 4);
         assertEquals(5.385, w.getMagnitude(), 0.001);
     }
+
+    @Test
+    public void getZero() {
+        EuclideanVector zero = EuclideanVector.getZero(3);
+        assertEquals(3, zero.getDimension());
+        for(int i = 0; i < zero.getDimension(); i++) {
+            assertEquals(0, zero.getCoordinate(i), 0.001);
+        }
+    }
 }

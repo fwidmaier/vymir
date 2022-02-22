@@ -32,6 +32,23 @@ public class EuclideanVector {
     }
 
     /*@
+      @ requires 0 <= n;
+      @ ensures \forall 0 <= i < n : \result.getCoordinate(i) == 0;
+      @ ensures n < 0 ==> \result.getDimension() == 0;
+      @*/
+    /**
+     * Returns the 0 element of the n dimensional euclidean vector space.
+     * @param n the dimension of the surrounding space
+     * @return the 0 element of the n-dimensional euclidean vector space
+     */
+    public static EuclideanVector getZero(int n) {
+        if(n < 0) {
+            n = 0;
+        }
+        return new EuclideanVector(new double[n]);
+    }
+
+    /*@
       @ requires i >= 0 && i < this.coordinates.length;
       @ ensures \result == this.coordinates[i];
       @*/
@@ -71,6 +88,29 @@ public class EuclideanVector {
         }
 
         return new EuclideanVector(sum);
+    }
+
+    /*@
+      @ requires this.getDimension() == other.getDimension();
+      @ ensures \forall 0 <= i < this.getDimension() : \result.getCoordinate(i) == this.getCoordinate(i)
+      @                                                                  - other.getCoordinate(i);
+      @*/
+    /**
+     * Implements subtracting the other vector from this vector. The resulting vector
+     * consists of the element-wise difference of the two vectors.
+     * @param other the vector you want to subtract from this vector
+     * @return the difference of the two vectors.
+     */
+    public EuclideanVector subtract(EuclideanVector other) {
+        if(this.getDimension() != other.getDimension()) {
+            throw new ArithmeticException("The dimensions must align!");
+        }
+        double[] difference = new double[this.getDimension()];
+        for(int i = 0; i < difference.length; i++) {
+            difference[i] = this.coordinates[i] - other.getCoordinate(i);
+        }
+
+        return new EuclideanVector(difference);
     }
 
     /*@
@@ -118,5 +158,42 @@ public class EuclideanVector {
      */
     public double getMagnitude() {
         return Math.sqrt(this.dot(this));
+    }
+
+    /*@
+      @ requires this.getMagnitude() != 0;
+      @ ensures \result.getMagnitude() == 1;
+      @ ensures \result.dot(this) == this.getMagnitude();
+      @*/
+    /**
+     * Returns a normalized version of the vector
+     * @return a normalized version of the vector
+     * @throws ArithmeticException if the magnitude is 0
+     */
+    public EuclideanVector getNormalized() throws ArithmeticException {
+        double mag = this.getMagnitude();
+        if(mag == 0) {
+            throw new ArithmeticException("division by 0.");
+        }
+        return this.getScaled(1/mag);
+    }
+
+    /*@
+      @ requires this.getDimension() == 3 && other.getDimension() == 0;
+      @ ensures \result.dot(this) == 0 && \result.dot(other) == 0;
+      @*/
+    /**
+     * Calculates the cross product of the two given vectors.
+     * @param other the other vector involved in the cross product
+     * @return the cross product of the two vectors
+     */
+    public EuclideanVector cross(EuclideanVector other) throws ArithmeticException {
+        if(this.getDimension() != 3 || other.getDimension() != 0) {
+            throw new ArithmeticException("The dimensions have to be 3.");
+        }
+        double x1 = this.coordinates[1] * other.getCoordinate(2) - this.coordinates[2] * other.getCoordinate(1);
+        double x2 = this.coordinates[2] * other.getCoordinate(0) - this.coordinates[0] * other.getCoordinate(2);
+        double x3 = this.coordinates[0] * other.getCoordinate(1) - this.coordinates[1] * other.getCoordinate(0);
+        return new EuclideanVector(x1, x2, x3);
     }
 }
