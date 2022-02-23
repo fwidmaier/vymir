@@ -188,8 +188,9 @@ public class EuclideanVector {
      * @return the cross product of the two vectors
      */
     public EuclideanVector cross(EuclideanVector other) throws ArithmeticException {
-        if(this.getDimension() != 3 || other.getDimension() != 0) {
-            throw new ArithmeticException("The dimensions have to be 3.");
+        if(this.getDimension() != 3 || other.getDimension() != 3) {
+            throw new ArithmeticException(String.format("The dimensions have to be 3, " +
+                    "not %d or %d.", this.getDimension(), other.getDimension()));
         }
         double x1 = this.coordinates[1] * other.getCoordinate(2) - this.coordinates[2] * other.getCoordinate(1);
         double x2 = this.coordinates[2] * other.getCoordinate(0) - this.coordinates[0] * other.getCoordinate(2);

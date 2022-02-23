@@ -1,6 +1,8 @@
 package mesh;
 
 import linalg.EuclideanVector;
+import render.Color;
+import render.Scene;
 
 import java.util.ArrayList;
 
@@ -98,5 +100,15 @@ public class Mesh {
             sum = sum.add(this.getVertex(i));
         }
         return sum.getScaled((double) 1 / vertices.length);
+    }
+
+    public void drawWireframe(Scene scene) throws Exception {
+        for(Face f : faces) {
+            for(int i = 0; i < f.getNumberOfVertices(); i++) {
+                scene.rasterizeLine(this.getVertex(f.getVertex(i)),
+                        this.getVertex(f.getVertex((i+1) % f.getNumberOfVertices())),
+                        Color.fromARGB((byte) 255, (byte) 255, (byte) 255, (byte) 255));
+            }
+        }
     }
 }

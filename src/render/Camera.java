@@ -10,7 +10,7 @@ public class Camera {
     private EuclideanVector look = new EuclideanVector();
     private EuclideanVector up = new EuclideanVector();
     private EuclideanVector right = new EuclideanVector();
-    private double zoom = 1;
+    private double zoom = 100;
 
     public Camera(EuclideanVector positon, EuclideanVector lock, EuclideanVector upGuide) {
         this.position = positon;
@@ -38,10 +38,10 @@ public class Camera {
 
     public EuclideanVector project(Vertex vertex) {
         EuclideanVector w = vertex.subtract(this.position);
-        double d = w.subtract(this.lock).dot(this.look);
-        if(d < -0.0001) {
+        double d = (w.subtract(this.lock)).dot(this.look);
+        /*if(d < -0.0001) {
             return null;
-        }
+        }*/
         double x = w.dot(this.right);
         double y = w.dot(this.up);
         double c = (2.5 * this.zoom)/(d + 0.0001);
