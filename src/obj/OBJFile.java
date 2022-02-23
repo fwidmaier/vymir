@@ -9,7 +9,7 @@ import java.io.*;
  * A (simple) class to load and write wavefront .obj files.
  */
 public class OBJFile {
-    private final static String HEADER = "# Automatically writen .obj file by 'vymir' " +
+    private final static String HEADER = "# Automatically written .obj file by 'vymir' " +
             "- PLEASE DO NOT MODIFY\n# (c) Felix Widmaier\n";
 
     /*@
