@@ -102,9 +102,15 @@ public class Mesh {
         return sum.getScaled((double) 1 / vertices.length);
     }
 
+    /**
+     * Method to draw the wireframe of the mesh onto the scene
+     * We use backface culling to speed up the process.
+     * @param scene the scene to draw to
+     */
     public void drawWireframe(Scene scene) throws Exception {
         for(Face f : faces) {
             for(int i = 0; i < f.getNumberOfVertices(); i++) {
+                if(this.getNormalVector(f).dot(scene.getCamera().getLook()) <= 0) continue;
                 scene.rasterizeLine(this.getVertex(f.getVertex(i)),
                         this.getVertex(f.getVertex((i+1) % f.getNumberOfVertices())),
                         Color.fromARGB((byte) 255, (byte) 255, (byte) 255, (byte) 255));

@@ -16,7 +16,8 @@ public class Vertex extends EuclideanVector implements ObjObject {
 
     /*@
       @ ensures this.getDimension() == 0 ==> \result == "";
-      @ ensures this.getDimension() > 0 ==> \result == "v this.getCoordinate(0) ... this.getCoordinate(n)";
+      @ ensures this.getDimension() > 0 ==> \result == "v this.getCoordinate(0) this.getCoordinate(2)
+      @                                                                           this.getCoordinate(1)";
       @*/
     /**
      * A method to get a wavefront obj representation of the vertex.
@@ -29,7 +30,7 @@ public class Vertex extends EuclideanVector implements ObjObject {
             return "";
         }
         StringBuilder export = new StringBuilder("v");
-        for(int i = 0; i < this.getDimension(); i++) {
+        for(int i : new int[]{0, 2, 1}) {
             export.append(String.format(pattern, this.getCoordinate(i)));
         }
         export.append("\n");

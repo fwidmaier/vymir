@@ -20,6 +20,10 @@ public class EuclideanVector {
         System.arraycopy(coordinates, 0, this.coordinates, 0, coordinates.length);
     }
 
+    public double[] getCoordinates() {
+        return this.coordinates;
+    }
+
     /*@
       @ ensures \result == this.coordinates.length;
       @*/
@@ -64,6 +68,54 @@ public class EuclideanVector {
         }
 
         return this.coordinates[i];
+    }
+
+    /*@
+      @ requires this.getDimension() > 0;
+      @ ensures \result == this.getCoordinate(0);
+      @*/
+    /**
+     * Method to conveniently get the first coordinate of the vector.
+     * @return the fist coordinate of the vector.
+     */
+    public double x() {
+        return this.getCoordinate(0);
+    }
+
+    /*@
+      @ requires this.getDimension() > 1;
+      @ ensures \result == this.getCoordinate(1);
+      @*/
+    /**
+     * Method to conveniently get the second coordinate of the vector.
+     * @return the second coordinate of the vector
+     */
+    public double y() {
+        return this.getCoordinate(1);
+    }
+
+    /*@
+      @ requires this.getDimension() > 2;
+      @ ensures \result == this.getCoordinate(2);
+      @*/
+    /**
+     * Method to conveniently get the third coordinate of the vector.
+     * @return the third coordinate of the vector
+     */
+    public double z() {
+        return this.getCoordinate(2);
+    }
+
+    /*@
+      @ requires this.getDimension() > 3;
+      @ ensures \result == this.getCoordinate(3);
+      @*/
+    /**
+     * Method to conveniently get the fourth coordinate of the vector.
+     * @return the fourth coordinate of the vector
+     */
+    public double w() {
+        return this.getCoordinate(3);
     }
 
     /*@
