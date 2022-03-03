@@ -11,7 +11,7 @@ import java.io.IOException;
 public class Main {
     public static void main(String[] args) throws Exception {
         Scene sc = new Scene(1000, 1000);
-        sc.addLight(new PointLight(new Vertex(-1, 5, 2), 0.05));
+        sc.addLight(new PointLight(new Vertex(-1, 5, 2), 0.1));
         sc.rasterizeLine(new Vertex(-5,0,0), new Vertex(5,0,0), Color.fromARGB((byte) 255, (byte) 163, (byte) 14, (byte) 66));
         sc.rasterizeLine(new Vertex(0,-5,0), new Vertex(0,5,0), Color.fromARGB((byte) 255, (byte) 142, (byte) 209, (byte) 18));
         //sc.rasterizeLine(new Vertex(0,0,0), new Vertex(0,0,1), Color.fromARGB((byte) 255, (byte) 142, (byte) 209, (byte) 18));
@@ -28,7 +28,7 @@ public class Main {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        File file = new File("test.png");
+        File file = new File("faces.png");
         try {
             ImageIO.write(sc.toBufferedImage(), "PNG", file);
         } catch (IOException e) {
