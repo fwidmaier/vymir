@@ -1,9 +1,11 @@
 package mesh;
 
+import linalg.EuclideanVector;
 import obj.ObjObject;
 
 public final class Face implements ObjObject {
     private final int[] vertices;
+    private EuclideanVector surfaceNormal;
 
     /*@
       @ ensures \forall 0 <= i < vertices.length : this.vertices[i] == vertices[i];
@@ -81,5 +83,13 @@ public final class Face implements ObjObject {
         }
         export.append("\n");
         return export.toString();
+    }
+
+    public void setSurfaceNormal(EuclideanVector newNormal) {
+        this.surfaceNormal = newNormal;
+    }
+
+    public EuclideanVector getSurfaceNormal() {
+        return this.surfaceNormal;
     }
 }

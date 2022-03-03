@@ -240,7 +240,9 @@ public class EuclideanVector {
      * @return the cross product of the two vectors
      */
     public EuclideanVector cross(EuclideanVector other) throws ArithmeticException {
-        if(this.getDimension() != 3 || other.getDimension() != 3) {
+        if(this.getDimension() == 2 && other.getDimension() == 2)
+            return new EuclideanVector((this.x() * other.y()) - (this.y() * other.x()));
+        else if(this.getDimension() != 3 || other.getDimension() != 3) {
             throw new ArithmeticException(String.format("The dimensions have to be 3, " +
                     "not %d or %d.", this.getDimension(), other.getDimension()));
         }

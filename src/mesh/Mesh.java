@@ -3,6 +3,7 @@ package mesh;
 import linalg.EuclideanVector;
 import render.Color;
 import render.Scene;
+import render.Light;
 
 import java.util.ArrayList;
 
@@ -81,6 +82,9 @@ public class Mesh {
      * @return the surface normal vector of the face
      */
     public EuclideanVector getNormalVector(Face face) {
+        if(face.getSurfaceNormal() != null) {
+            return face.getSurfaceNormal();
+        }
         int[] vertices = face.getVertices();
         EuclideanVector a = this.vertices.get(vertices[0]).subtract(this.vertices.get(vertices[1]));
         EuclideanVector b = this.vertices.get(vertices[0]).subtract(this.vertices.get(vertices[vertices.length - 1]));
@@ -110,11 +114,24 @@ public class Mesh {
     public void drawWireframe(Scene scene) throws Exception {
         for(Face f : faces) {
             for(int i = 0; i < f.getNumberOfVertices(); i++) {
-                //if(this.getNormalVector(f).dot(scene.getCamera().getLook()) <= 0) continue;
+                if(this.getNormalVector(f).dot(scene.getCamera().getLook()) <= 0) continue;
                 scene.rasterizeLine(this.getVertex(f.getVertex(i)),
                         this.getVertex(f.getVertex((i+1) % f.getNumberOfVertices())),
                         Color.fromARGB((byte) 255, (byte) 255, (byte) 255, (byte) 255));
             }
+        }
+    }
+
+    public void render(Scene scene) throws Exception {
+        int white = Color.fromRGB((byte) 255, (byte) 255, (byte) 255);
+        for(Face f : this.faces) {
+            if(this.getNormalVector(f).dot(scene.getCamera().getLook()) <= 0) continue;
+            double intensity = 0;
+            for(Light light : scene.getLights()) intensity += light.intensityAt(getMidpoint(f), getNormalVector(f));
+            if(intensity <= 0) intensity = 0;
+            scene.rasterizeTriangle(this.getVertex(f.getVertex(0)),
+                    this.getVertex(f.getVertex(1)), this.getVertex(f.getVertex(2)), Color.fromRGB((byte) (255*intensity),
+                            (byte) (255*intensity), (byte) (255*intensity)));
         }
     }
 }

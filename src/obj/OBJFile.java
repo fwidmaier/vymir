@@ -9,8 +9,10 @@ import java.io.*;
  * A (simple) class to load and write wavefront .obj files.
  */
 public class OBJFile {
-    private final static String HEADER = "# Automatically written .obj file by 'vymir' " +
-            "- PLEASE DO NOT MODIFY\n# (c) Felix Widmaier\n";
+    private final static String HEADER = """
+            # Automatically written .obj file by 'vymir' - PLEASE DO NOT MODIFY
+            # (c) Felix Widmaier
+            """;
 
     /*@
       @ requires a.length > Math.max(i, j);
@@ -62,7 +64,9 @@ public class OBJFile {
                 for(int i = 0; i < vertexIds.length; i++) {
                     vertexIds[i] = Integer.parseInt(splitLine[i + 1].split("/")[0]) - 1;
                 }
-                mesh.addFace(new Face(vertexIds));
+                Face face = new Face(vertexIds);
+                face.setSurfaceNormal(mesh.getNormalVector(face));
+                mesh.addFace(face);
             }
         }
         return mesh;

@@ -3,6 +3,7 @@ package render;
 import linalg.EuclideanVector;
 import mesh.Mesh;
 import mesh.Vertex;
+
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -17,10 +18,12 @@ import java.util.ArrayList;
 public class Scene {
     private final int width;
     private final int height;
+    private final int backgroundColor;
     private int[][] frameBuffer;
     private double[][] depthBuffer;
     private Camera camera;
     private ArrayList<Mesh> meshes;
+    private ArrayList<Light> lights;
 
     /*@
       @ requires width > 0 && height > 0;
@@ -34,17 +37,15 @@ public class Scene {
     public Scene(int width, int height) {
         this.width = width;
         this.height = height;
+        this.backgroundColor = 0;
         this.frameBuffer = new int[width][height];
         this.depthBuffer = new double[width][height];
-        this.camera = new Camera(new EuclideanVector(0, 5, 2), new EuclideanVector(0,0,0),
+        this.camera = new Camera(new EuclideanVector(1, 5, 2), new EuclideanVector(0,0,0),
                 new EuclideanVector(0, 0, -1), this);
         this.meshes = new ArrayList<>();
+        this.lights = new ArrayList<>();
 
-        for(int x0 = 0; x0 < this.width; x0++) {
-            for(int y0 = 0; y0 < this.height; y0++) {
-                this.depthBuffer[x0][y0] = Double.POSITIVE_INFINITY;
-            }
-        }
+        this.resetBuffers();
     }
 
     /*@
@@ -74,7 +75,7 @@ public class Scene {
       @*/
     /**
      * Getter for the camera of the scene
-     * @return
+     * @return the camera of the scene
      */
     public Camera getCamera() {
         return this.camera;
@@ -181,6 +182,48 @@ public class Scene {
         }
     }
 
+    private EuclideanVector[] getBoundingBox(EuclideanVector a, EuclideanVector b, EuclideanVector c) {
+        EuclideanVector[] box = new EuclideanVector[2];
+        box[0] = new EuclideanVector(Math.min(a.x(), Math.min(b.x(), c.x())), Math.min(a.y(), Math.min(b.y(), c.y())));
+        box[1] = new EuclideanVector(Math.max(a.x(), Math.max(b.x(), c.x())), Math.max(a.y(), Math.max(b.y(), c.y())));
+        return box;
+    }
+
+    private EuclideanVector getBaryCentric(EuclideanVector[] verts, int x, int y) {
+        EuclideanVector vs1 = new EuclideanVector(verts[1].x() - verts[0].x(), verts[1].y() - verts[0].y());
+        EuclideanVector vs2 = new EuclideanVector(verts[2].x() - verts[0].x(), verts[2].y() - verts[0].y());
+        EuclideanVector p = new EuclideanVector(x - verts[0].x(), y - verts[0].y());
+        double a = Math.abs(vs2.cross(vs1).x());
+        double beta = vs2.cross(p).x() / a;
+        double gamma = p.cross(vs1).x() / a;
+        return new EuclideanVector(1 - beta - gamma, beta, gamma);
+    }
+
+    public void rasterizeTriangle(Vertex a, Vertex b, Vertex c, int color) {
+        EuclideanVector aScreen = this.camera.project(a);
+        EuclideanVector bScreen = this.camera.project(b);
+        EuclideanVector cScreen = this.camera.project(c);
+        EuclideanVector[] boundingBox = this.getBoundingBox(aScreen.getScaled(1/aScreen.z()),
+                bScreen.getScaled(1/bScreen.z()), cScreen.getScaled(1/cScreen.z()));
+        EuclideanVector[] pts = {aScreen.getScaled(1/aScreen.z()),
+                bScreen.getScaled(1/bScreen.z()), cScreen.getScaled(1/cScreen.z())};
+        for(int x = (int) boundingBox[0].x(); x <= boundingBox[1].x(); x++)
+            for (int y = (int) boundingBox[0].y(); y <= boundingBox[1].y(); y++) {
+                EuclideanVector baryCentric = getBaryCentric(pts, x, y);
+                boolean inTriangle = baryCentric.x() > 0 && baryCentric.y() > 0 && baryCentric.z() > 0 &&
+                        baryCentric.x() < 1 && baryCentric.y() < 1 && baryCentric.z() < 1;
+                if(!inTriangle) {
+                    continue;
+                }
+                double depth = aScreen.z() * baryCentric.x() + bScreen.z() +
+                        baryCentric.y() + cScreen.z() * baryCentric.z();
+                if(0 < depth && depth <= this.depthBuffer[x + width / 2][y + height / 2]) {
+                    this.setPixel(x + this.width / 2, y + this.height / 2, color);
+                    this.depthBuffer[x + width / 2][y + height / 2] = depth;
+                }
+            }
+    }
+
     /*@
       @ ensures this.meshes.indexOf(mesh) != -1;
       @*/
@@ -192,13 +235,31 @@ public class Scene {
         this.meshes.add(mesh);
     }
 
+    public void addLight(Light light) {
+        this.lights.add(light);
+    }
+
+    public ArrayList<Light> getLights() {
+        return this.lights;
+    }
+
+    private void resetBuffers() {
+        for(int i = 0; i < this.width; i++)
+            for (int j = 0; j < this.height; j++) {
+                this.frameBuffer[i][j] = this.backgroundColor;
+                this.depthBuffer[i][j] = Double.POSITIVE_INFINITY;
+            }
+    }
+
     /**
      * Method to render all meshes from the scene to the frame buffer
      * For now, only wireframe rendering is possible
      */
     public void render() throws Exception {
+        this.resetBuffers();
         for(Mesh mesh : this.meshes) {
-            mesh.drawWireframe(this);
+            // mesh.drawWireframe(this);
+            mesh.render(this);
         }
     }
 }
