@@ -37,10 +37,10 @@ public class Scene {
     public Scene(int width, int height) {
         this.width = width;
         this.height = height;
-        this.backgroundColor = 0;
+        this.backgroundColor = Color.fromRGB((byte) 61, (byte) 61, (byte) 61);
         this.frameBuffer = new int[width][height];
         this.depthBuffer = new double[width][height];
-        this.camera = new Camera(new EuclideanVector(1, 5, 2), new EuclideanVector(0,0,0),
+        this.camera = new Camera(new EuclideanVector(1, 3.7, 2.7), new EuclideanVector(0.5,0,0.5),
                 new EuclideanVector(0, 0, -1), this);
         this.meshes = new ArrayList<>();
         this.lights = new ArrayList<>();
@@ -215,10 +215,15 @@ public class Scene {
                 if(!inTriangle) {
                     continue;
                 }
-                double depth = aScreen.z() * baryCentric.x() + bScreen.z() +
-                        baryCentric.y() + cScreen.z() * baryCentric.z();
+
+                EuclideanVector clipped = new EuclideanVector(baryCentric.x()/aScreen.z(),
+                        baryCentric.y()/bScreen.z(), baryCentric.z()/cScreen.z());
+                //clipped = clipped.getScaled(1/(clipped.x() + clipped.y() + clipped.z()));
+                double depth = aScreen.z() * clipped.x() + bScreen.z() +
+                        clipped.y() + cScreen.z() * clipped.z();
+
                 if(0 < depth && depth <= this.depthBuffer[x + width / 2][y + height / 2]) {
-                    this.setPixel(x + this.width / 2, y + this.height / 2, color);
+                    this.setPixel(x + this.width / 2, y + this.height / 2, color + Color.fromRGB((byte) 38, (byte) 38, (byte) 38));
                     this.depthBuffer[x + width / 2][y + height / 2] = depth;
                 }
             }
@@ -258,7 +263,7 @@ public class Scene {
     public void render() throws Exception {
         this.resetBuffers();
         for(Mesh mesh : this.meshes) {
-            // mesh.drawWireframe(this);
+            mesh.drawWireframe(this);
             mesh.render(this);
         }
     }

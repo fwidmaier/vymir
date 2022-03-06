@@ -117,7 +117,7 @@ public class Mesh {
                 if(this.getNormalVector(f).dot(scene.getCamera().getLook()) <= 0) continue;
                 scene.rasterizeLine(this.getVertex(f.getVertex(i)),
                         this.getVertex(f.getVertex((i+1) % f.getNumberOfVertices())),
-                        Color.fromARGB((byte) 255, (byte) 255, (byte) 255, (byte) 255));
+                        Color.fromARGB((byte) 255, (byte) 252, (byte) 143, (byte) 0));
             }
         }
     }

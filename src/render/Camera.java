@@ -48,6 +48,7 @@ public class Camera {
         this.right = this.look.cross(this.upGuide);
         this.up = this.right.cross(this.look);
         this.zoom = Math.min(this.scene.getWidth(), this.scene.getHeight()) >> 1;
+        zoom *= 1.5;
     }
 
     /*@
