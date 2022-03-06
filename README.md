@@ -1,4 +1,4 @@
-# vymir
+# vymir - вимір (Ukranian for 'dimension')
 
 <img src="doc/cover.png" alt="drawing"/>
 
