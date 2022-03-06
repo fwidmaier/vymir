@@ -40,7 +40,7 @@ public class Scene {
         this.backgroundColor = Color.fromRGB((byte) 61, (byte) 61, (byte) 61);
         this.frameBuffer = new int[width][height];
         this.depthBuffer = new double[width][height];
-        this.camera = new Camera(new EuclideanVector(1, 3.7, 2.7), new EuclideanVector(0.5,0,0.5),
+        this.camera = new Camera(new EuclideanVector(1, 3.7, 2.7), new EuclideanVector(0,0,0.5),
                 new EuclideanVector(0, 0, -1), this);
         this.meshes = new ArrayList<>();
         this.lights = new ArrayList<>();
