@@ -8,4 +8,4 @@ For rendering we use a Z-buffer and backface culling:
 
 <img src="doc/test.gif" alt="drawing" width="300"/> <img src="doc/faces.png" alt="drawing" width="300"/> <img src="doc/culling.png" alt="drawing" width="300"/>
 
-Rendering the animation shown above took about 12ms per frame.
+Rendering the [animation](doc/test.gif) shown above took about 12ms per frame.
