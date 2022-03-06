@@ -1,6 +1,6 @@
 # vymir
 
-<img src="doc/cover.png" alt="drawing" height="200"/>
+<img src="doc/cover.png" alt="drawing"/>
 
 A simple renderer for .obj files in pure Java.
 
