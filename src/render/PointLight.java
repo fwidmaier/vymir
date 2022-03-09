@@ -14,6 +14,7 @@ public class PointLight extends Light{
 
     @Override
     public double intensityAt(EuclideanVector position, EuclideanVector normal) {
-        return position.subtract(this.position).dot(normal) * intensity;
+        EuclideanVector d = position.subtract(this.position);
+        return d.dot(normal) * intensity/d.dot(d);
     }
 }

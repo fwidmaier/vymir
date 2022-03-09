@@ -221,7 +221,7 @@ public class Scene {
                 double depth = 1/clipped.dot(new EuclideanVector(1,1,1));
 
                 if(0 < depth && depth <= this.depthBuffer[x + width / 2][y + height / 2]) {
-                    this.setPixel(x + this.width / 2, y + this.height / 2, color + Color.fromRGB((byte) 38, (byte) 38, (byte) 38));
+                    this.setPixel(x + this.width / 2, y + this.height / 2, color + Color.fromRGB((byte) 30, (byte) 30, (byte) 30));
                     this.depthBuffer[x + width / 2][y + height / 2] = depth;
                 }
             }

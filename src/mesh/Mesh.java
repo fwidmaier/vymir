@@ -87,7 +87,7 @@ public class Mesh {
         }
         int[] vertices = face.getVertices();
         EuclideanVector a = this.vertices.get(vertices[0]).subtract(this.vertices.get(vertices[1]));
-        EuclideanVector b = this.vertices.get(vertices[0]).subtract(this.vertices.get(vertices[vertices.length - 1]));
+        EuclideanVector b = this.vertices.get(vertices[0]).subtract(this.vertices.get(vertices[2]));
         EuclideanVector n =  a.cross(b);
         return n.getNormalized();
     }
