@@ -218,9 +218,7 @@ public class Scene {
 
                 EuclideanVector clipped = new EuclideanVector(baryCentric.x()/aScreen.z(),
                         baryCentric.y()/bScreen.z(), baryCentric.z()/cScreen.z());
-                //clipped = clipped.getScaled(1/(clipped.x() + clipped.y() + clipped.z()));
-                double depth = aScreen.z() * clipped.x() + bScreen.z() +
-                        clipped.y() + cScreen.z() * clipped.z();
+                double depth = 1/clipped.dot(new EuclideanVector(1,1,1));
 
                 if(0 < depth && depth <= this.depthBuffer[x + width / 2][y + height / 2]) {
                     this.setPixel(x + this.width / 2, y + this.height / 2, color + Color.fromRGB((byte) 38, (byte) 38, (byte) 38));
@@ -263,7 +261,6 @@ public class Scene {
     public void render() throws Exception {
         this.resetBuffers();
         for(Mesh mesh : this.meshes) {
-            mesh.drawWireframe(this);
             mesh.render(this);
         }
     }
