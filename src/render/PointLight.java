@@ -17,4 +17,9 @@ public class PointLight extends Light{
         EuclideanVector d = position.subtract(this.position);
         return d.dot(normal) * intensity/d.dot(d);
     }
+
+    @Override
+    public void setPosition(Vertex position) {
+        this.position = position;
+    }
 }
