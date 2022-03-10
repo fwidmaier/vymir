@@ -129,9 +129,13 @@ public class Mesh {
             double intensity = 0;
             for(Light light : scene.getLights()) intensity += light.intensityAt(getMidpoint(f), getNormalVector(f));
             if(intensity <= 0) intensity = 0;
-            scene.rasterizeTriangle(this.getVertex(f.getVertex(0)),
+            Vertex[] vertices = new Vertex[f.getNumberOfVertices()];
+            for(int i = 0; i < f.getNumberOfVertices(); i++) vertices[i] = this.getVertex(f.getVertex(i));
+            scene.rasterizeFace(Color.fromRGB((byte) (255*intensity),
+                    (byte) (255*intensity), (byte) (255*intensity)), vertices);
+            /*scene.rasterizeTriangle(this.getVertex(f.getVertex(0)),
                     this.getVertex(f.getVertex(1)), this.getVertex(f.getVertex(2)), Color.fromRGB((byte) (255*intensity),
-                            (byte) (255*intensity), (byte) (255*intensity)));
+                            (byte) (255*intensity), (byte) (255*intensity)));*/
         }
     }
 }

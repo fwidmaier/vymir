@@ -212,7 +212,7 @@ public class Scene {
                 EuclideanVector baryCentric = getBaryCentric(pts, x, y);
                 boolean inTriangle = baryCentric.x() > 0 && baryCentric.y() > 0 && baryCentric.z() > 0 &&
                         baryCentric.x() < 1 && baryCentric.y() < 1 && baryCentric.z() < 1;
-                if(!inTriangle) {
+                if(!inTriangle || x < -this.width/2 || x >= this.width/2 || y < -this.height/2 || y >= this.height/2) {
                     continue;
                 }
 
@@ -225,6 +225,15 @@ public class Scene {
                     this.depthBuffer[x + width / 2][y + height / 2] = depth;
                 }
             }
+    }
+
+    public void rasterizeFace(int color, Vertex ... vertices) {
+        if(vertices.length == 3) {
+            this.rasterizeTriangle(vertices[0], vertices[1], vertices[2], color);
+        } else if(vertices.length == 4) {
+            this.rasterizeTriangle(vertices[0], vertices[1], vertices[2], color);
+            this.rasterizeTriangle(vertices[0], vertices[3], vertices[2], color);
+        }
     }
 
     /*@
