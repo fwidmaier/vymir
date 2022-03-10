@@ -193,7 +193,7 @@ public class Scene {
         EuclideanVector vs1 = new EuclideanVector(verts[1].x() - verts[0].x(), verts[1].y() - verts[0].y());
         EuclideanVector vs2 = new EuclideanVector(verts[2].x() - verts[0].x(), verts[2].y() - verts[0].y());
         EuclideanVector p = new EuclideanVector(x - verts[0].x(), y - verts[0].y());
-        double a = Math.abs(vs2.cross(vs1).x());
+        double a = vs2.cross(vs1).x();
         double beta = vs2.cross(p).x() / a;
         double gamma = p.cross(vs1).x() / a;
         return new EuclideanVector(1 - beta - gamma, beta, gamma);
