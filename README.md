@@ -13,3 +13,4 @@ For rendering we use a Z-buffer and backface culling:
 Rendering the [animation](doc/test.gif) shown above took about 10ms per frame - at least on my machine...
 
 In [halloween.gif](doc/halloween.gif), [this .obj](https://www.turbosquid.com/3d-models/free-halloween-pumpkin-3d-model/961113) was used.
+In [dog.png](doc/dog.png) and [dog.mp4](doc/dog.mp4), [this.obj](https://www.turbosquid.com/3d-models/dachshund-3d-model-1193676) was used.
